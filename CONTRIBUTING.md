@@ -1,4 +1,4 @@
-# Contributing to EOSIO SDK for Java: Android Example App
+# Contributing to ARISEN SDK for Java: Android Example App
 
 Interested in contributing? That's awesome! Here are some guidelines to get started quickly and easily:
 

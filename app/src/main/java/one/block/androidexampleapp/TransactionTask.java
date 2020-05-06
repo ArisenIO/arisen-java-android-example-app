@@ -6,41 +6,41 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import one.block.eosiojava.error.serializationProvider.SerializationProviderError;
-import one.block.eosiojava.error.session.TransactionPrepareError;
-import one.block.eosiojava.error.session.TransactionSignAndBroadCastError;
-import one.block.eosiojava.implementations.ABIProviderImpl;
-import one.block.eosiojava.interfaces.IABIProvider;
-import one.block.eosiojava.interfaces.IRPCProvider;
-import one.block.eosiojava.interfaces.ISerializationProvider;
-import one.block.eosiojava.interfaces.ISignatureProvider;
-import one.block.eosiojava.models.rpcProvider.Action;
-import one.block.eosiojava.models.rpcProvider.Authorization;
-import one.block.eosiojava.models.rpcProvider.Transaction;
-import one.block.eosiojava.models.rpcProvider.response.PushTransactionResponse;
-import one.block.eosiojava.models.rpcProvider.response.RPCResponseError;
-import one.block.eosiojava.session.TransactionProcessor;
-import one.block.eosiojava.session.TransactionSession;
-import one.block.eosiojavaabieosserializationprovider.AbiEosSerializationProviderImpl;
-import one.block.eosiojavarpcprovider.error.EosioJavaRpcProviderInitializerError;
-import one.block.eosiojavarpcprovider.implementations.EosioJavaRpcProviderImpl;
-import one.block.eosiosoftkeysignatureprovider.SoftKeySignatureProviderImpl;
-import one.block.eosiosoftkeysignatureprovider.error.ImportKeyError;
+import one.block.arisenjava.error.serializationProvider.SerializationProviderError;
+import one.block.arisenjava.error.session.TransactionPrepareError;
+import one.block.arisenjava.error.session.TransactionSignAndBroadCastError;
+import one.block.arisenjava.implementations.ABIProviderImpl;
+import one.block.arisenjava.interfaces.IABIProvider;
+import one.block.arisenjava.interfaces.IRPCProvider;
+import one.block.arisenjava.interfaces.ISerializationProvider;
+import one.block.arisenjava.interfaces.ISignatureProvider;
+import one.block.arisenjava.models.rpcProvider.Action;
+import one.block.arisenjava.models.rpcProvider.Authorization;
+import one.block.arisenjava.models.rpcProvider.Transaction;
+import one.block.arisenjava.models.rpcProvider.response.PushTransactionResponse;
+import one.block.arisenjava.models.rpcProvider.response.RPCResponseError;
+import one.block.arisenjava.session.TransactionProcessor;
+import one.block.arisenjava.session.TransactionSession;
+import one.block.arisenjavaabirixserializationprovider.AbiRixSerializationProviderImpl;
+import one.block.arisenjavarpcprovider.error.ArisenJavaRpcProviderInitializerError;
+import one.block.arisenjavarpcprovider.implementations.ArisenJavaRpcProviderImpl;
+import one.block.arisensoftkeysignatureprovider.SoftKeySignatureProviderImpl;
+import one.block.arisensoftkeysignatureprovider.error.ImportKeyError;
 
 /**
- * This class is an example about the most basic/easy way to use eosio-java to send a transaction.
+ * This class is an example about the most basic/easy way to use arisen-java to send a transaction.
  * <p>
  * Basic steps:
  * <p>
- *     - Create serialization provider as an instant of {@link AbiEosSerializationProviderImpl} from [eosiojavaandroidabieosserializationprovider] library
+ *     - Create serialization provider as an instant of {@link AbiRixSerializationProviderImpl} from [arisenjavaandroidabirixserializationprovider] library
  *     <p>
- *     - Create RPC provider as an instant of {@link EosioJavaRpcProviderImpl} with an input string point to a node backend.
+ *     - Create RPC provider as an instant of {@link ArisenJavaRpcProviderImpl} with an input string point to a node backend.
  *     <p>
  *     - Create ABI provider as an instant of {@link ABIProviderImpl} with instants of Rpc provider and serialization provider.
  *     <p>
  *     - Create Signature provider as an instant of {@link SoftKeySignatureProviderImpl} which is not recommended for production because of its simple key management.
  *     <p>
- *         - Import an EOS private key which associate with sender's account which will be used to sign the transaction.
+ *         - Import an RSN private key which associate with sender's account which will be used to sign the transaction.
  * <p>
  *     - Create an instant of {@link TransactionSession} which is used for spawning/factory {@link TransactionProcessor}
  * <p>
@@ -91,7 +91,7 @@ public class TransactionTask extends AsyncTask<String, String, Void> {
         // Creating serialization provider
         ISerializationProvider serializationProvider;
         try {
-            serializationProvider = new AbiEosSerializationProviderImpl();
+            serializationProvider = new AbiRixSerializationProviderImpl();
         } catch (SerializationProviderError serializationProviderError) {
             serializationProviderError.printStackTrace();
             return null;
@@ -100,10 +100,10 @@ public class TransactionTask extends AsyncTask<String, String, Void> {
         // Creating RPC Provider
         IRPCProvider rpcProvider;
         try {
-            rpcProvider = new EosioJavaRpcProviderImpl(nodeUrl, ENABLE_NETWORK_LOG);
-        } catch (EosioJavaRpcProviderInitializerError eosioJavaRpcProviderInitializerError) {
-            eosioJavaRpcProviderInitializerError.printStackTrace();
-            this.publishProgress(Boolean.toString(false), eosioJavaRpcProviderInitializerError.getMessage());
+            rpcProvider = new ArisenJavaRpcProviderImpl(nodeUrl, ENABLE_NETWORK_LOG);
+        } catch (ArisenJavaRpcProviderInitializerError arisenJavaRpcProviderInitializerError) {
+            arisenJavaRpcProviderInitializerError.printStackTrace();
+            this.publishProgress(Boolean.toString(false), arisenJavaRpcProviderInitializerError.getMessage());
             return null;
         }
 
@@ -133,8 +133,8 @@ public class TransactionTask extends AsyncTask<String, String, Void> {
                 "\"memo\" : \"" + memo + "\"\n" +
                 "}";
 
-        // Creating action with action's data, eosio.token contract and transfer action.
-        Action action = new Action("eosio.token", "transfer", Collections.singletonList(new Authorization(fromAccount, "active")), jsonData);
+        // Creating action with action's data, arisen.token contract and transfer action.
+        Action action = new Action("arisen.token", "transfer", Collections.singletonList(new Authorization(fromAccount, "active")), jsonData);
         try {
 
             // Prepare transaction with above action. A transaction can be executed with multiple action.

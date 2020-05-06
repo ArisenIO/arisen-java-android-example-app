@@ -2,19 +2,19 @@ package one.block.androidexampleapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import one.block.eosiojava.error.EosioError;
-import one.block.eosiojava.models.rpcProvider.response.Detail;
-import one.block.eosiojava.models.rpcProvider.response.RPCResponseError;
-import one.block.eosiojavarpcprovider.error.EosioJavaRpcProviderCallError;
+import one.block.arisenjava.error.ArisenError;
+import one.block.arisenjava.models.rpcProvider.response.Detail;
+import one.block.arisenjava.models.rpcProvider.response.RPCResponseError;
+import one.block.arisenjavarpcprovider.error.ArisenJavaRpcProviderCallError;
 
 public class ErrorUtils {
 
     /**
-     * Recursively look for a specific error inside causes loop of an EosioError
+     * Recursively look for a specific error inside causes loop of an ArisenError
      *
      * @param errorClass - the error class to find
      * @param error      - the error object to search
-     * @param <T>        - the generic class which extends from EosioError
+     * @param <T>        - the generic class which extends from ArisenError
      * @return the error which class is specified by input. Return null if could not find the specific class.
      */
     @Nullable
@@ -32,18 +32,18 @@ public class ErrorUtils {
     }
 
     /**
-     * Recursively look for the error message of a specific error inside causes loop of an EosioError
+     * Recursively look for the error message of a specific error inside causes loop of an ArisenError
      *
      * @param errorClass - the error class to get the message
      * @param error      - the error object to search
      * @return the error message which class is specified by input. Return the root cause message if could not find the specific class.
      */
-    public static String getError(Class errorClass, EosioError error) {
+    public static String getError(Class errorClass, ArisenError error) {
         if (error.getClass() == errorClass || error.getCause() == null) {
             return error.getMessage();
         }
 
-        return getError(errorClass, (EosioError) error.getCause());
+        return getError(errorClass, (ArisenError) error.getCause());
     }
 
     /**
@@ -53,8 +53,8 @@ public class ErrorUtils {
      * @return {@link RPCResponseError} object. Return null if input error does not contain any backend error.
      */
     @Nullable
-    public static RPCResponseError getBackendError(EosioError error) {
-        EosioJavaRpcProviderCallError rpcError = ErrorUtils.getErrorObject(EosioJavaRpcProviderCallError.class, error);
+    public static RPCResponseError getBackendError(ArisenError error) {
+        ArisenJavaRpcProviderCallError rpcError = ErrorUtils.getErrorObject(ArisenJavaRpcProviderCallError.class, error);
         if (rpcError != null) {
             return rpcError.getRpcResponseError();
         }

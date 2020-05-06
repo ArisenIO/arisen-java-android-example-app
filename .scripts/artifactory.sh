@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
-GRADLE_PROPERTIES="/var/lib/buildkite-agent/builds/automation-android-builder-fleet/EOSIO/eosio-java-android-example-app/gradle.properties"
+GRADLE_PROPERTIES="/var/lib/buildkite-agent/builds/automation-android-builder-fleet/ARISEN/arisen-java-android-example-app/gradle.properties"
 export GRADLE_PROPERTIES
 echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
 echo "Gradle Properties does not exist"

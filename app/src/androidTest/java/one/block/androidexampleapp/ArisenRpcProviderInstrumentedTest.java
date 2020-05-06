@@ -18,23 +18,23 @@ import androidx.test.runner.AndroidJUnit4;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.SocketPolicy;
-import one.block.eosiojava.error.rpcProvider.GetBlockRpcError;
-import one.block.eosiojava.models.rpcProvider.Action;
-import one.block.eosiojava.models.rpcProvider.Authorization;
-import one.block.eosiojava.models.rpcProvider.Transaction;
-import one.block.eosiojava.models.rpcProvider.request.GetBlockRequest;
-import one.block.eosiojava.models.rpcProvider.request.GetRawAbiRequest;
-import one.block.eosiojava.models.rpcProvider.request.GetRequiredKeysRequest;
-import one.block.eosiojava.models.rpcProvider.request.PushTransactionRequest;
-import one.block.eosiojava.models.rpcProvider.response.GetBlockResponse;
-import one.block.eosiojava.models.rpcProvider.response.GetInfoResponse;
-import one.block.eosiojava.models.rpcProvider.response.GetRawAbiResponse;
-import one.block.eosiojava.models.rpcProvider.response.GetRequiredKeysResponse;
-import one.block.eosiojava.models.rpcProvider.response.PushTransactionResponse;
-import one.block.eosiojava.models.rpcProvider.response.RPCResponseError;
-import one.block.eosiojava.models.rpcProvider.response.RpcError;
-import one.block.eosiojavarpcprovider.error.EosioJavaRpcProviderCallError;
-import one.block.eosiojavarpcprovider.implementations.EosioJavaRpcProviderImpl;
+import one.block.arisenjava.error.rpcProvider.GetBlockRpcError;
+import one.block.arisenjava.models.rpcProvider.Action;
+import one.block.arisenjava.models.rpcProvider.Authorization;
+import one.block.arisenjava.models.rpcProvider.Transaction;
+import one.block.arisenjava.models.rpcProvider.request.GetBlockRequest;
+import one.block.arisenjava.models.rpcProvider.request.GetRawAbiRequest;
+import one.block.arisenjava.models.rpcProvider.request.GetRequiredKeysRequest;
+import one.block.arisenjava.models.rpcProvider.request.PushTransactionRequest;
+import one.block.arisenjava.models.rpcProvider.response.GetBlockResponse;
+import one.block.arisenjava.models.rpcProvider.response.GetInfoResponse;
+import one.block.arisenjava.models.rpcProvider.response.GetRawAbiResponse;
+import one.block.arisenjava.models.rpcProvider.response.GetRequiredKeysResponse;
+import one.block.arisenjava.models.rpcProvider.response.PushTransactionResponse;
+import one.block.arisenjava.models.rpcProvider.response.RPCResponseError;
+import one.block.arisenjava.models.rpcProvider.response.RpcError;
+import one.block.arisenjavarpcprovider.error.ArisenJavaRpcProviderCallError;
+import one.block.arisenjavarpcprovider.implementations.ArisenJavaRpcProviderImpl;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -48,7 +48,7 @@ import static org.junit.Assert.assertTrue;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class EosioRpcProviderInstrumentedTest {
+public class ArisenRpcProviderInstrumentedTest {
 
     @Test
     public void getInfoTest() {
@@ -60,7 +60,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
             GetInfoResponse response = rpcProvider.getInfo();
             assertNotNull(response);
@@ -90,7 +90,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
             GetBlockRequest request = new GetBlockRequest("25260032");
             GetBlockResponse response = rpcProvider.getBlock(request);
@@ -117,18 +117,18 @@ public class EosioRpcProviderInstrumentedTest {
     public void getRawAbiTest() {
 
         MockWebServer server = new MockWebServer();
-        server.enqueue(new MockResponse().setResponseCode(200).setBody(GET_RAW_EOSIO_TOKEN_ABI_RESPONSE));
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(GET_RAW_ARISEN_TOKEN_ABI_RESPONSE));
 
         try {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
-            GetRawAbiRequest request = new GetRawAbiRequest("eosio.token");
+            GetRawAbiRequest request = new GetRawAbiRequest("arisen.token");
             GetRawAbiResponse response = rpcProvider.getRawAbi(request);
             assertNotNull(response);
-            assertEquals("eosio.token", response.getAccountName());
+            assertEquals("arisen.token", response.getAccountName());
             assertEquals("43864d5af0fe294d44d19c612036cbe8c098414c4a12a5a7bb0bfe7db1556248", response.getAbiHash());
             assertEquals("DmVvc2lvOjphYmkvMS4wAQxhY2NvdW50X25hbWUEbmFtZQUIdHJhbnNmZXIABARmcm9tDGFjY291bnRfbmFtZQJ0bwxhY2NvdW50X25hbWUIcXVhbnRpdHkFYXNzZXQEbWVtbwZzdHJpbmcGY3JlYXRlAAIGaXNzdWVyDGFjY291bnRfbmFtZQ5tYXhpbXVtX3N1cHBseQVhc3NldAVpc3N1ZQADAnRvDGFjY291bnRfbmFtZQhxdWFudGl0eQVhc3NldARtZW1vBnN0cmluZwdhY2NvdW50AAEHYmFsYW5jZQVhc3NldA5jdXJyZW5jeV9zdGF0cwADBnN1cHBseQVhc3NldAptYXhfc3VwcGx5BWFzc2V0Bmlzc3VlcgxhY2NvdW50X25hbWUDAAAAVy08zc0IdHJhbnNmZXK8By0tLQp0aXRsZTogVG9rZW4gVHJhbnNmZXIKc3VtbWFyeTogVHJhbnNmZXIgdG9rZW5zIGZyb20gb25lIGFjY291bnQgdG8gYW5vdGhlci4KaWNvbjogaHR0cHM6Ly9jZG4udGVzdG5ldC5kZXYuYjFvcHMubmV0L3Rva2VuLXRyYW5zZmVyLnBuZyNjZTUxZWY5ZjllZWNhMzQzNGU4NTUwN2UwZWQ0OWU3NmZmZjEyNjU0MjJiZGVkMDI1NWYzMTk2ZWE1OWM4YjBjCi0tLQoKIyMgVHJhbnNmZXIgVGVybXMgJiBDb25kaXRpb25zCgpJLCB7e2Zyb219fSwgY2VydGlmeSB0aGUgZm9sbG93aW5nIHRvIGJlIHRydWUgdG8gdGhlIGJlc3Qgb2YgbXkga25vd2xlZGdlOgoKMS4gSSBjZXJ0aWZ5IHRoYXQge3txdWFudGl0eX19IGlzIG5vdCB0aGUgcHJvY2VlZHMgb2YgZnJhdWR1bGVudCBvciB2aW9sZW50IGFjdGl2aXRpZXMuCjIuIEkgY2VydGlmeSB0aGF0LCB0byB0aGUgYmVzdCBvZiBteSBrbm93bGVkZ2UsIHt7dG99fSBpcyBub3Qgc3VwcG9ydGluZyBpbml0aWF0aW9uIG9mIHZpb2xlbmNlIGFnYWluc3Qgb3RoZXJzLgozLiBJIGhhdmUgZGlzY2xvc2VkIGFueSBjb250cmFjdHVhbCB0ZXJtcyAmIGNvbmRpdGlvbnMgd2l0aCByZXNwZWN0IHRvIHt7cXVhbnRpdHl9fSB0byB7e3RvfX0uCgpJIHVuZGVyc3RhbmQgdGhhdCBmdW5kcyB0cmFuc2ZlcnMgYXJlIG5vdCByZXZlcnNpYmxlIGFmdGVyIHRoZSB7eyR0cmFuc2FjdGlvbi5kZWxheV9zZWN9fSBzZWNvbmRzIG9yIG90aGVyIGRlbGF5IGFzIGNvbmZpZ3VyZWQgYnkge3tmcm9tfX0ncyBwZXJtaXNzaW9ucy4KCklmIHRoaXMgYWN0aW9uIGZhaWxzIHRvIGJlIGlycmV2ZXJzaWJseSBjb25maXJtZWQgYWZ0ZXIgcmVjZWl2aW5nIGdvb2RzIG9yIHNlcnZpY2VzIGZyb20gJ3t7dG99fScsIEkgYWdyZWUgdG8gZWl0aGVyIHJldHVybiB0aGUgZ29vZHMgb3Igc2VydmljZXMgb3IgcmVzZW5kIHt7cXVhbnRpdHl9fSBpbiBhIHRpbWVseSBtYW5uZXIuAAAAAAClMXYFaXNzdWUAAAAAAKhs1EUGY3JlYXRlAAIAAAA4T00RMgNpNjQBCGN1cnJlbmN5AQZ1aW50NjQHYWNjb3VudAAAAAAAkE3GA2k2NAEIY3VycmVuY3kBBnVpbnQ2NA5jdXJyZW5jeV9zdGF0cwAAAAA==",
                     response.getAbi());
@@ -155,7 +155,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
 
             GetRequiredKeysRequest request = new GetRequiredKeysRequest(availableKeys(), transactionForRequiredKeys());
@@ -163,7 +163,7 @@ public class EosioRpcProviderInstrumentedTest {
             assertNotNull(response);
             assertFalse(response.getRequiredKeys().isEmpty());
             assertNotNull(response.getRequiredKeys().get(0));
-            assertEquals("EOS5j67P1W2RyBXAL8sNzYcDLox3yLpxyrxgkYy1xsXzVCvzbYpba",
+            assertEquals("RSN5j67P1W2RyBXAL8sNzYcDLox3yLpxyrxgkYy1xsXzVCvzbYpba",
                     response.getRequiredKeys().get(0));
         } catch (Exception ex) {
             fail("Should not get exception when calling getRequiredKeys(): " + ex.getLocalizedMessage()
@@ -188,7 +188,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
 
             List<String> signatures = new ArrayList<>();
@@ -224,7 +224,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
 
             List<String> signatures = new ArrayList<>();
@@ -239,7 +239,7 @@ public class EosioRpcProviderInstrumentedTest {
             assertEquals("Error pushing transaction.", ex.getLocalizedMessage());
             assertNotNull(ex.getCause());
             assertEquals("Bad status code: 500 (Server Error), returned from server. Additional error information: See further error information in RPCProviderError.", ex.getCause().getMessage());
-            RPCResponseError rpcResponseError = ((EosioJavaRpcProviderCallError)ex.getCause()).getRpcResponseError();
+            RPCResponseError rpcResponseError = ((ArisenJavaRpcProviderCallError)ex.getCause()).getRpcResponseError();
             assertNotNull(rpcResponseError);
             assertEquals(new BigInteger("500"), rpcResponseError.getCode());
             assertEquals("Internal Service Error", rpcResponseError.getMessage());
@@ -270,7 +270,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
             GetInfoResponse response = rpcProvider.getInfo();
             fail("Should not succeed when calling getInfo().  Should time out.");
@@ -303,7 +303,7 @@ public class EosioRpcProviderInstrumentedTest {
             server.start();
             String baseUrl = server.url("/").toString();
 
-            final EosioJavaRpcProviderImpl rpcProvider = new EosioJavaRpcProviderImpl(
+            final ArisenJavaRpcProviderImpl rpcProvider = new ArisenJavaRpcProviderImpl(
                     baseUrl);
             GetBlockRequest[] request = { new GetBlockRequest("25260032") };
 
@@ -372,7 +372,7 @@ public class EosioRpcProviderInstrumentedTest {
         authList.add(new Authorization("cryptkeeper", "active"));
 
         List<Action> actionList = new ArrayList<>();
-        Action action = new Action("eosio.token",
+        Action action = new Action("arisen.token",
                 "transfer",
                 authList,
                 "00AEAA4AC15CFD4500000060D234CD3DA06806000000000004454F53000000001A746865206772617373686F70706572206C696573206865617679"
@@ -429,8 +429,8 @@ public class EosioRpcProviderInstrumentedTest {
             + "    \"ref_block_prefix\": 2249927103\n"
             + "}";
 
-    private static final String GET_RAW_EOSIO_TOKEN_ABI_RESPONSE = "{\n"
-            + "    \"account_name\": \"eosio.token\",\n"
+    private static final String GET_RAW_ARISEN_TOKEN_ABI_RESPONSE = "{\n"
+            + "    \"account_name\": \"arisen.token\",\n"
             + "    \"code_hash\": \"3e0cf4172ab025f9fff5f1db11ee8a34d44779492e1d668ae1dc2d129e865348\",\n"
             + "    \"abi_hash\": \"43864d5af0fe294d44d19c612036cbe8c098414c4a12a5a7bb0bfe7db1556248\",\n"
             + "    \"abi\": \"DmVvc2lvOjphYmkvMS4wAQxhY2NvdW50X25hbWUEbmFtZQUIdHJhbnNmZXIABARmcm9tDGFjY291bnRfbmFtZQJ0bwxhY2NvdW50X25hbWUIcXVhbnRpdHkFYXNzZXQEbWVtbwZzdHJpbmcGY3JlYXRlAAIGaXNzdWVyDGFjY291bnRfbmFtZQ5tYXhpbXVtX3N1cHBseQVhc3NldAVpc3N1ZQADAnRvDGFjY291bnRfbmFtZQhxdWFudGl0eQVhc3NldARtZW1vBnN0cmluZwdhY2NvdW50AAEHYmFsYW5jZQVhc3NldA5jdXJyZW5jeV9zdGF0cwADBnN1cHBseQVhc3NldAptYXhfc3VwcGx5BWFzc2V0Bmlzc3VlcgxhY2NvdW50X25hbWUDAAAAVy08zc0IdHJhbnNmZXK8By0tLQp0aXRsZTogVG9rZW4gVHJhbnNmZXIKc3VtbWFyeTogVHJhbnNmZXIgdG9rZW5zIGZyb20gb25lIGFjY291bnQgdG8gYW5vdGhlci4KaWNvbjogaHR0cHM6Ly9jZG4udGVzdG5ldC5kZXYuYjFvcHMubmV0L3Rva2VuLXRyYW5zZmVyLnBuZyNjZTUxZWY5ZjllZWNhMzQzNGU4NTUwN2UwZWQ0OWU3NmZmZjEyNjU0MjJiZGVkMDI1NWYzMTk2ZWE1OWM4YjBjCi0tLQoKIyMgVHJhbnNmZXIgVGVybXMgJiBDb25kaXRpb25zCgpJLCB7e2Zyb219fSwgY2VydGlmeSB0aGUgZm9sbG93aW5nIHRvIGJlIHRydWUgdG8gdGhlIGJlc3Qgb2YgbXkga25vd2xlZGdlOgoKMS4gSSBjZXJ0aWZ5IHRoYXQge3txdWFudGl0eX19IGlzIG5vdCB0aGUgcHJvY2VlZHMgb2YgZnJhdWR1bGVudCBvciB2aW9sZW50IGFjdGl2aXRpZXMuCjIuIEkgY2VydGlmeSB0aGF0LCB0byB0aGUgYmVzdCBvZiBteSBrbm93bGVkZ2UsIHt7dG99fSBpcyBub3Qgc3VwcG9ydGluZyBpbml0aWF0aW9uIG9mIHZpb2xlbmNlIGFnYWluc3Qgb3RoZXJzLgozLiBJIGhhdmUgZGlzY2xvc2VkIGFueSBjb250cmFjdHVhbCB0ZXJtcyAmIGNvbmRpdGlvbnMgd2l0aCByZXNwZWN0IHRvIHt7cXVhbnRpdHl9fSB0byB7e3RvfX0uCgpJIHVuZGVyc3RhbmQgdGhhdCBmdW5kcyB0cmFuc2ZlcnMgYXJlIG5vdCByZXZlcnNpYmxlIGFmdGVyIHRoZSB7eyR0cmFuc2FjdGlvbi5kZWxheV9zZWN9fSBzZWNvbmRzIG9yIG90aGVyIGRlbGF5IGFzIGNvbmZpZ3VyZWQgYnkge3tmcm9tfX0ncyBwZXJtaXNzaW9ucy4KCklmIHRoaXMgYWN0aW9uIGZhaWxzIHRvIGJlIGlycmV2ZXJzaWJseSBjb25maXJtZWQgYWZ0ZXIgcmVjZWl2aW5nIGdvb2RzIG9yIHNlcnZpY2VzIGZyb20gJ3t7dG99fScsIEkgYWdyZWUgdG8gZWl0aGVyIHJldHVybiB0aGUgZ29vZHMgb3Igc2VydmljZXMgb3IgcmVzZW5kIHt7cXVhbnRpdHl9fSBpbiBhIHRpbWVseSBtYW5uZXIuAAAAAAClMXYFaXNzdWUAAAAAAKhs1EUGY3JlYXRlAAIAAAA4T00RMgNpNjQBCGN1cnJlbmN5AQZ1aW50NjQHYWNjb3VudAAAAAAAkE3GA2k2NAEIY3VycmVuY3kBBnVpbnQ2NA5jdXJyZW5jeV9zdGF0cwAAAAA==\"\n"
@@ -439,7 +439,7 @@ public class EosioRpcProviderInstrumentedTest {
 
     private static final String GET_REQUIRED_KEYS_RESPONSE = "{\n"
             + "    \"required_keys\": [\n"
-            + "        \"EOS5j67P1W2RyBXAL8sNzYcDLox3yLpxyrxgkYy1xsXzVCvzbYpba\"\n"
+            + "        \"RSN5j67P1W2RyBXAL8sNzYcDLox3yLpxyrxgkYy1xsXzVCvzbYpba\"\n"
             + "    ]\n"
             + "}";
 
@@ -461,7 +461,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "        \"action_traces\": [\n"
             + "            {\n"
             + "                \"receipt\": {\n"
-            + "                    \"receiver\": \"eosio.assert\",\n"
+            + "                    \"receiver\": \"arisen.assert\",\n"
             + "                    \"act_digest\": \"a4caeedd5e5824dd916c1aaabc84f0a114ddbda83728c8c23ba859d4a8a93721\",\n"
             + "                    \"global_sequence\": 21103875,\n"
             + "                    \"recv_sequence\": 332,\n"
@@ -470,7 +470,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                    \"abi_sequence\": 1\n"
             + "                },\n"
             + "                \"act\": {\n"
-            + "                    \"account\": \"eosio.assert\",\n"
+            + "                    \"account\": \"arisen.assert\",\n"
             + "                    \"name\": \"require\",\n"
             + "                    \"authorization\": [],\n"
             + "                    \"data\": {\n"
@@ -478,7 +478,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                        \"manifest_id\": \"97f4a1fdbecda6d59c96a43009fc5e5d7b8f639b1269c77cec718460dcc19cb3\",\n"
             + "                        \"actions\": [\n"
             + "                            {\n"
-            + "                                \"contract\": \"eosio.token\",\n"
+            + "                                \"contract\": \"arisen.token\",\n"
             + "                                \"action\": \"transfer\"\n"
             + "                            }\n"
             + "                        ],\n"
@@ -502,7 +502,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "            },\n"
             + "            {\n"
             + "                \"receipt\": {\n"
-            + "                    \"receiver\": \"eosio.token\",\n"
+            + "                    \"receiver\": \"arisen.token\",\n"
             + "                    \"act_digest\": \"9eab239d66d13c34b9cc35a6f79fb2f6d61a2d9df9a484075c82e65d73a0cbc8\",\n"
             + "                    \"global_sequence\": 21103876,\n"
             + "                    \"recv_sequence\": 1366,\n"
@@ -516,7 +516,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                    \"abi_sequence\": 4\n"
             + "                },\n"
             + "                \"act\": {\n"
-            + "                    \"account\": \"eosio.token\",\n"
+            + "                    \"account\": \"arisen.token\",\n"
             + "                    \"name\": \"transfer\",\n"
             + "                    \"authorization\": [\n"
             + "                        {\n"
@@ -527,7 +527,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                    \"data\": {\n"
             + "                        \"from\": \"cryptkeeper\",\n"
             + "                        \"to\": \"brandon\",\n"
-            + "                        \"quantity\": \"42.0000 EOS\",\n"
+            + "                        \"quantity\": \"42.0000 RIX\",\n"
             + "                        \"memo\": \"the grasshopper lies heavy\"\n"
             + "                    },\n"
             + "                    \"hex_data\": \"00aeaa4ac15cfd4500000060d234cd3da06806000000000004454f53000000001a746865206772617373686f70706572206c696573206865617679\"\n"
@@ -559,7 +559,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                            \"abi_sequence\": 4\n"
             + "                        },\n"
             + "                        \"act\": {\n"
-            + "                            \"account\": \"eosio.token\",\n"
+            + "                            \"account\": \"arisen.token\",\n"
             + "                            \"name\": \"transfer\",\n"
             + "                            \"authorization\": [\n"
             + "                                {\n"
@@ -570,7 +570,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                            \"data\": {\n"
             + "                                \"from\": \"cryptkeeper\",\n"
             + "                                \"to\": \"brandon\",\n"
-            + "                                \"quantity\": \"42.0000 EOS\",\n"
+            + "                                \"quantity\": \"42.0000 RIX\",\n"
             + "                                \"memo\": \"the grasshopper lies heavy\"\n"
             + "                            },\n"
             + "                            \"hex_data\": \"00aeaa4ac15cfd4500000060d234cd3da06806000000000004454f53000000001a746865206772617373686f70706572206c696573206865617679\"\n"
@@ -603,7 +603,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                            \"abi_sequence\": 4\n"
             + "                        },\n"
             + "                        \"act\": {\n"
-            + "                            \"account\": \"eosio.token\",\n"
+            + "                            \"account\": \"arisen.token\",\n"
             + "                            \"name\": \"transfer\",\n"
             + "                            \"authorization\": [\n"
             + "                                {\n"
@@ -614,7 +614,7 @@ public class EosioRpcProviderInstrumentedTest {
             + "                            \"data\": {\n"
             + "                                \"from\": \"cryptkeeper\",\n"
             + "                                \"to\": \"brandon\",\n"
-            + "                                \"quantity\": \"42.0000 EOS\",\n"
+            + "                                \"quantity\": \"42.0000 RIX\",\n"
             + "                                \"memo\": \"the grasshopper lies heavy\"\n"
             + "                            },\n"
             + "                            \"hex_data\": \"00aeaa4ac15cfd4500000060d234cd3da06806000000000004454f53000000001a746865206772617373686f70706572206c696573206865617679\"\n"

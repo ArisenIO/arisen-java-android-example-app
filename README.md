@@ -1,10 +1,10 @@
 ![Java Logo](img/java-logo.png) <img src="img/Android_Robot.png" width="100">
-# EOSIO SDK for Java: Android Example App ![EOSIO Alpha](https://img.shields.io/badge/EOSIO-Alpha-blue.svg)
+# ARISEN SDK for Java: Android Example App ![ARISEN Alpha](https://img.shields.io/badge/ARISEN-Alpha-blue.svg)
 [![Software License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](/./LICENSE)
 ![Language Java](https://img.shields.io/badge/Language-Java-yellow.svg)
 ![](https://img.shields.io/badge/Deployment%20Target-Android%206%2B-blue.svg)
 
-The EOSIO SDK for Java: Android Example App is a simple application demonstrating how to integrate with EOSIO-based blockchains using [EOSIO SDK for Java](https://github.com/EOSIO/eosio-java). The application does two things: fetches your account token balance and pushes a transfer action.
+The ARISEN SDK for Java: Android Example App is a simple application demonstrating how to integrate with ARISEN-based blockchains using [ARISEN SDK for Java](https://github.com/ARISEN/arisen-java). The application does two things: fetches your account token balance and pushes a transfer action.
 
 *All product and company names are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.*
 
@@ -33,16 +33,16 @@ The EOSIO SDK for Java: Android Example App is a simple application demonstratin
 
 To get the example application up and running:
 
-1. Clone this repo: `git clone https://github.com/EOSIO/eosio-java-android-example-app.git`
+1. Clone this repo: `git clone https://github.com/ARISEN/arisen-java-android-example-app.git`
 1. Open the project with Android Studio.
-1. Modify `eosio.properties` file:
+1. Modify `arisen.properties` file:
 
     ```java
     node_url=[your node endpoint URL] //mandatory
     from_account=[your account name] //optional
     to_account=[receiver account] //optional
     from_account_private_key=[your private key] //optional
-    amount=[amount to transfer] //optional; e.g., 1.1234 EOS
+    amount=[amount to transfer] //optional; e.g., 1.1234 RIX
     memo=[transfer memo] //optional
     private_keys=[for multiple key tests in instrumentation test] //optional
     ```
@@ -54,60 +54,60 @@ To get the example application up and running:
 ## About the App
 
 The app demonstrates how to:
-- use the [Android RPC Provider implementation](https://github.com/EOSIO/eosio-java-android-rpc-provider) to query the chain for an account's token balance,
-- get a new transaction from [`TransactionSession`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionSession.java),
+- use the [Android RPC Provider implementation](https://github.com/ARISEN/arisen-java-android-rpc-provider) to query the chain for an account's token balance,
+- get a new transaction from [`TransactionSession`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionSession.java),
 - create an action and add it to a transaction,
 - and sign and broadcast the transaction.
 
 To do this we are using a few libraries and providers, in concert:
 
-* [EOSIO SDK for Java](https://github.com/EOSIO/eosio-java): The core EOSIO SDK for Java library
-* [Android RPC Provider](https://github.com/EOSIO/eosio-java-android-rpc-provider): An RPC provider implementation for Android
-* [ABIEOS Serialization Provider for Android](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider): A pluggable serialization provider for EOSIO SDK for Java using ABIEOS (for transaction and action conversion between JSON and binary data representations)
-* [Softkey Signature Provider](https://github.com/EOSIO/eosio-java-softkey-signature-provider): An example pluggable signature provider for EOSIO SDK for Java for signing transactions using in-memory keys (not for production use)
+* [ARISEN SDK for Java](https://github.com/ARISEN/arisen-java): The core ARISEN SDK for Java library
+* [Android RPC Provider](https://github.com/ARISEN/arisen-java-android-rpc-provider): An RPC provider implementation for Android
+* [ABIRIX Serialization Provider for Android](https://github.com/ARISEN/arisen-java-android-abirix-serialization-provider): A pluggable serialization provider for ARISEN SDK for Java using ABIRIX (for transaction and action conversion between JSON and binary data representations)
+* [Softkey Signature Provider](https://github.com/ARISEN/arisen-java-softkey-signature-provider): An example pluggable signature provider for ARISEN SDK for Java for signing transactions using in-memory keys (not for production use)
 
-**WARNING**: [Android 9 disables clear text traffic support by default](https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted) so `android:usesCleartextTraffic` setting in [AndroidManifest.xml](https://github.com/EOSIO/eosio-java-android-example-app/blob/master/app/src/main/AndroidManifest.xml) is used to enable/disable the support depending on the build variant you use. 
+**WARNING**: [Android 9 disables clear text traffic support by default](https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted) so `android:usesCleartextTraffic` setting in [AndroidManifest.xml](https://github.com/ARISEN/arisen-java-android-example-app/blob/master/app/src/main/AndroidManifest.xml) is used to enable/disable the support depending on the build variant you use. 
 
 ## How to Transact
 
-[`TransactionTask.java`](app/src/main/java/one/block/androidexampleapp/TransactionTask.java) contains basic sample code for constructing, signing and broadcasting transactions using the `eosiojava` libraries.
+[`TransactionTask.java`](app/src/main/java/one/block/androidexampleapp/TransactionTask.java) contains basic sample code for constructing, signing and broadcasting transactions using the `arisenjava` libraries.
 
 ### Set Up Your TransactionSession
 
-First, set up your [`TransactionSession`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionSession.java). This is your factory for creating new transactions:
+First, set up your [`TransactionSession`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionSession.java). This is your factory for creating new transactions:
 
-1. Create an instance of the [`AbiEosSerializationProviderImpl`](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider/blob/develop/eosiojavaabieos/src/main/java/one/block/eosiojavaabieosserializationprovider/AbiEosSerializationProviderImpl.java) serialization provider from the [`eosiojavaandroidabieosserializationprovider`](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider) library.
-1. Create an instance of the [`EosioJavaRpcProviderImpl`](https://github.com/EOSIO/eosio-java-android-rpc-provider/blob/master/eosiojavarpcprovider/src/main/java/one/block/eosiojavarpcprovider/implementations/EosioJavaRpcProviderImpl.java) RPC provider with an input string pointing to a nodeos RPC endpoint. You can also use `EosioJavaRpcProviderImpl(String, Boolean)` constructor to enable network debug log.
-1. Create an instance of the [`ABIProviderImpl`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/implementations/ABIProviderImpl.java) ABI provider, instantiating it with the RPC and serialization provider instances.
-1. Create an instance of the [` SoftKeySignatureProviderImpl`](https://github.com/EOSIO/eosio-java-softkey-signature-provider/blob/master/eosiojavasoftkeysignatureprovider/src/main/java/one/block/eosiosoftkeysignatureprovider/SoftKeySignatureProviderImpl.java) signature provider. (This particular implementation is not recommended for production use due to its simplistic management of private keys).
-    - Import an EOS private key associated with the sender's account.
-1. Create an instance of [`TransactionSession`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionSession.java), which is used for spawning [`TransactionProcessor`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionProcessor.java)s.
+1. Create an instance of the [`AbiRixSerializationProviderImpl`](https://github.com/ARISEN/arisen-java-android-abirix-serialization-provider/blob/develop/arisenjavaabirix/src/main/java/one/block/arisenjavaabirixserializationprovider/AbiRixSerializationProviderImpl.java) serialization provider from the [`arisenjavaandroidabirixserializationprovider`](https://github.com/ARISEN/arisen-java-android-abirix-serialization-provider) library.
+1. Create an instance of the [`ArisenJavaRpcProviderImpl`](https://github.com/ARISEN/arisen-java-android-rpc-provider/blob/master/arisenjavarpcprovider/src/main/java/one/block/arisenjavarpcprovider/implementations/ArisenJavaRpcProviderImpl.java) RPC provider with an input string pointing to a aos RPC endpoint. You can also use `ArisenJavaRpcProviderImpl(String, Boolean)` constructor to enable network debug log.
+1. Create an instance of the [`ABIProviderImpl`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/implementations/ABIProviderImpl.java) ABI provider, instantiating it with the RPC and serialization provider instances.
+1. Create an instance of the [` SoftKeySignatureProviderImpl`](https://github.com/ARISEN/arisen-java-softkey-signature-provider/blob/master/arisenjavasoftkeysignatureprovider/src/main/java/one/block/arisensoftkeysignatureprovider/SoftKeySignatureProviderImpl.java) signature provider. (This particular implementation is not recommended for production use due to its simplistic management of private keys).
+    - Import an RSN private key associated with the sender's account.
+1. Create an instance of [`TransactionSession`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionSession.java), which is used for spawning [`TransactionProcessor`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionProcessor.java)s.
 
 ### Create, Sign and Broadcast Transactions
 
 Now you're ready to create transactions using your `TransactionSession`:
 
-1. Create an instance of [`TransactionProcessor`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionProcessor.java) from the [`TransactionSession`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionSession.java) instance above by calling ` TransactionSession#getTransactionProcessor()` or `TransactionSession#getTransactionProcessor(Transaction)`.
+1. Create an instance of [`TransactionProcessor`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionProcessor.java) from the [`TransactionSession`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionSession.java) instance above by calling ` TransactionSession#getTransactionProcessor()` or `TransactionSession#getTransactionProcessor(Transaction)`.
 1. Call `TransactionProcessor#prepare(List)` with a list of Actions. The method will serialize the actions, which can always be queried with `Transaction#getActions()`. The transaction now is ready to be signed and broadcast.
-1. Call `TransactionProcessor#signAndBroadcast()` to sign the transaction inside [`TransactionProcessor`](https://github.com/EOSIO/eosio-java/blob/master/eosiojava/src/main/java/one/block/eosiojava/session/TransactionProcessor.java) and broadcast it.
+1. Call `TransactionProcessor#signAndBroadcast()` to sign the transaction inside [`TransactionProcessor`](https://github.com/ARISEN/arisen-java/blob/master/arisenjava/src/main/java/one/block/arisenjava/session/TransactionProcessor.java) and broadcast it.
 
-For a more comprehensive list of available provider implementations, see [`EOSIO SDK for Java - Provider Interface Architecture`](https://github.com/EOSIO/eosio-java/tree/master#provider-interface-architecture). 
+For a more comprehensive list of available provider implementations, see [`ARISEN SDK for Java - Provider Interface Architecture`](https://github.com/ARISEN/arisen-java/tree/master#provider-interface-architecture). 
 
-For more details about the complete workflow of EOSIO SDK for Java, see [`EOSIO SDK for Java - Complete workflow`](https://github.com/EOSIO/eosio-java/tree/master/documents/complete_workflow.pdf).
+For more details about the complete workflow of ARISEN SDK for Java, see [`ARISEN SDK for Java - Complete workflow`](https://github.com/ARISEN/arisen-java/tree/master/documents/complete_workflow.pdf).
 
-An overview of the error model used in this library can be found in the [`EOSIO SDK for Java - Error Model`](https://github.com/EOSIO/eosio-java/tree/master/documents/error_model.pdf)
+An overview of the error model used in this library can be found in the [`ARISEN SDK for Java - Error Model`](https://github.com/ARISEN/arisen-java/tree/master/documents/error_model.pdf)
 
 ## Want to help?
 
 Interested in improving the example application? That's awesome! Here are some [Contribution Guidelines](./CONTRIBUTING.md) and the [Code of Conduct](./CONTRIBUTING.md#conduct).
 
-If you'd like to contribute to the EOSIO SDK for Java libraries themselves, please see the contribution guidelines on those individual repos.
+If you'd like to contribute to the ARISEN SDK for Java libraries themselves, please see the contribution guidelines on those individual repos.
 
 ## License
 [MIT licensed](./LICENSE)
 
 ## Important
 
-See LICENSE for copyright and license terms.  Block.one makes its contribution on a voluntary basis as a member of the EOSIO community and is not responsible for ensuring the overall performance of the software or any related applications.  We make no representation, warranty, guarantee or undertaking in respect of the software or any related documentation, whether expressed or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall we be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or documentation or the use or other dealings in the software or documentation. Any test results or performance figures are indicative and will not reflect performance under all conditions.  Any reference to any third party or third-party product, service or other resource is not an endorsement or recommendation by Block.one.  We are not responsible, and disclaim any and all responsibility and liability, for your use of or reliance on any of these resources. Third-party resources may be updated, changed or terminated at any time, so the information here may be out of date or inaccurate.  Any person using or offering this software in connection with providing software, goods or services to third parties shall advise such third parties of these license terms, disclaimers and exclusions of liability.  Block.one, EOSIO, EOSIO Labs, EOS, the heptahedron and associated logos are trademarks of Block.one.
+See LICENSE for copyright and license terms.  Block.one makes its contribution on a voluntary basis as a member of the ARISEN community and is not responsible for ensuring the overall performance of the software or any related applications.  We make no representation, warranty, guarantee or undertaking in respect of the software or any related documentation, whether expressed or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall we be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or documentation or the use or other dealings in the software or documentation. Any test results or performance figures are indicative and will not reflect performance under all conditions.  Any reference to any third party or third-party product, service or other resource is not an endorsement or recommendation by Block.one.  We are not responsible, and disclaim any and all responsibility and liability, for your use of or reliance on any of these resources. Third-party resources may be updated, changed or terminated at any time, so the information here may be out of date or inaccurate.  Any person using or offering this software in connection with providing software, goods or services to third parties shall advise such third parties of these license terms, disclaimers and exclusions of liability.  Block.one, ARISEN, ARISEN Labs, RSN, the heptahedron and associated logos are trademarks of Block.one.
 
 Wallets and related components are complex software that require the highest levels of security.  If incorrectly built or used, they may compromise users’ private keys and digital assets. Wallet applications and related components should undergo thorough security evaluations before being used.  Only experienced developers should work with this software.

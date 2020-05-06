@@ -6,10 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import okhttp3.RequestBody;
-import one.block.eosiojava.error.rpcProvider.RpcProviderError;
-import one.block.eosiojava.models.rpcProvider.response.RPCResponseError;
-import one.block.eosiojavarpcprovider.error.EosioJavaRpcProviderInitializerError;
-import one.block.eosiojavarpcprovider.implementations.EosioJavaRpcProviderImpl;
+import one.block.arisenjava.error.rpcProvider.RpcProviderError;
+import one.block.arisenjava.models.rpcProvider.response.RPCResponseError;
+import one.block.arisenjavarpcprovider.error.ArisenJavaRpcProviderInitializerError;
+import one.block.arisenjavarpcprovider.implementations.ArisenJavaRpcProviderImpl;
 
 public class CheckBalanceTask extends AsyncTask<String, String, Void> {
 
@@ -51,12 +51,12 @@ public class CheckBalanceTask extends AsyncTask<String, String, Void> {
         String nodeUrl = params[0];
         String fromAccount = params[1];
 
-        EosioJavaRpcProviderImpl rpcProvider;
+        ArisenJavaRpcProviderImpl rpcProvider;
         try {
             this.publishProgress("Checking Account Balance...");
-            rpcProvider = new EosioJavaRpcProviderImpl(nodeUrl, ENABLE_NETWORK_LOG);
+            rpcProvider = new ArisenJavaRpcProviderImpl(nodeUrl, ENABLE_NETWORK_LOG);
             String getCurrentBalanceRequestJSON = "{\n" +
-                    "\t\"code\" : \"eosio.token\"\n" +
+                    "\t\"code\" : \"arisen.token\"\n" +
                     "\t\"account\" : \"" + fromAccount + "\"\n" +
                     "}";
 
@@ -74,11 +74,11 @@ public class CheckBalanceTask extends AsyncTask<String, String, Void> {
             String accountBalance = jsonArray.getString(0);
 
             this.publishProgress(Boolean.toString(true), "Current Account Balance: " + accountBalance, accountBalance);
-        } catch (EosioJavaRpcProviderInitializerError eosioJavaRpcProviderInitializerError) {
-            // Happens if creating EosioJavaRpcProviderImpl unsuccessful
-            eosioJavaRpcProviderInitializerError.printStackTrace();
+        } catch (ArisenJavaRpcProviderInitializerError ArisenJavaRpcProviderInitializerError) {
+            // Happens if creating ArisenJavaRpcProviderImpl unsuccessful
+            arisenJavaRpcProviderInitializerError.printStackTrace();
 
-            this.publishProgress(Boolean.toString(false), eosioJavaRpcProviderInitializerError.asJsonString());
+            this.publishProgress(Boolean.toString(false), arisenJavaRpcProviderInitializerError.asJsonString());
         } catch (RpcProviderError rpcProviderError) {
             // Happens if calling getCurrentBalance unsuccessful
             rpcProviderError.printStackTrace();
